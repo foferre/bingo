@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bingo</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body{
+            background: #0CCE6B url('https://www.transparenttextures.com/patterns/arabesque.png') repeat;;
+        }
+
+        #bingoBoard td {
+            font-size: 1.5em;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .bingotable {
+            display: flex;
+            padding-left: 1em;
+            padding-top: 2.5em;
+        }
+        
+        td.letter-B { background-color: red !important; color: whitesmoke !important}
+        td.letter-I { background-color: yellow !important; color: gray !important}
+        td.letter-N { background-color: green !important; color: whitesmoke !important}
+        td.letter-G { background-color: blue !important; color: whitesmoke !important}
+        td.letter-O { background-color: purple !important; color: whitesmoke !important}
+
+        .live-placeholder {
+            margin-top: 1%;
+            width: 100%; /* Ocupa a largura do contêiner pai */
+            /*max-width: 500px; /* Limita o tamanho máximo */
+            height: 100%; /* Define a altura para manter o quadrado */
+            border: 5px solid #007bff; /* Moldura azul */
+            background-color: #f8f9fa; /* Cor de fundo cinza claro */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #007bff;
+            font-size: 1.5rem;
+        }
+
+        .col-md-4 {
+          display: flex;
+          justify-content: center; /* Centraliza horizontalmente */
+          align-items: center; /* Centraliza verticalmente */
+        }
+
+        #logo {
+            max-width: 100%; /* Garante que a imagem não ultrapasse o contêiner */
+            max-height: 100%; /* Evita que a imagem fique maior que o espaço disponível */
+        }
+
+        #roundNumber {
+          cursor: pointer; 
+          background: white; 
+          padding: 3vw 4vw; 
+          border-radius: 10px;
+          box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+          font-size: 3vw;
+          font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8" style="height: 65vh;">
+              <div class="live-placeholder">
+                <span>Área para transmissão ao vivo</span>
+              </div>
+            </div>
+            <div class="col-md-4" style="height: 65vh;">
+                <img id="logo" src="assets/images/logo.png"></img>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 bingotable" style="height: 35vh;">
+                <table id="bingoBoard" class="table table-bordered table-dark">
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="col-md-4" style="height: 35vh;">
+              <span id="roundNumber">
+                  Rodada: 
+              </span>
+            </div>
+        </div>
+    </div>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+<script>
+    function playSound(num) {
+      const audio = new Audio(`assets/audios/n${num}.mp3`);
+      audio.play();
+    }
+    // Geração dinâmica da cartela de bingo e configuração dos cliques
+    window.addEventListener("DOMContentLoaded", function() {
+      const bingoBoardBody = document.querySelector("#bingoBoard tbody");
+      const letters = ["B", "I", "N", "G", "O"];
+      let lastDrawnCell = null;
+      let round = 0;
+      
+      for (let i = 0; i < 5; i++) {
+        const tr = document.createElement("tr");
+        // Cria a célula da letra e adiciona a classe para a cor (ex.: letter-B)
+        const letterTd = document.createElement("td");
+        letterTd.textContent = letters[i];
+        letterTd.classList.add("text-center", "align-middle", "fw-bold", "letter-" + letters[i]);
+        tr.appendChild(letterTd);
+        
+        // Cria 15 células com os números correspondentes
+        const start = i * 15 + 1;
+        const end = start + 15;
+        for (let num = start; num < end; num++) {
+          const td = document.createElement("td");
+          td.textContent = num;
+          td.dataset.number = num;
+          td.classList.add("text-center");
+          td.addEventListener("click", function() {
+            if (td.classList.contains("bg-danger") || td.classList.contains("bg-warning")) {
+              td.classList.remove("bg-danger", "bg-warning");
+              if (td === lastDrawnCell) {
+                lastDrawnCell = null;
+              }
+              return;
+            }
+            if (lastDrawnCell) {
+              lastDrawnCell.classList.remove("bg-danger");
+              lastDrawnCell.classList.add("bg-warning");
+            }
+            td.classList.add("bg-danger");
+            lastDrawnCell = td;
+            round++;
+            playSound(td.dataset.number);
+          });
+          tr.appendChild(td);
+        }
+        bingoBoardBody.appendChild(tr);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        let roundElement = document.getElementById("roundNumber");
+
+        function updateRound() {
+            let roundInput = prompt("Digite o número da rodada:");
+            if (roundInput !== null) {
+              if (roundInput.trim() !== "" && !isNaN(roundInput)) {
+                roundElement.textContent = "Rodada: " + roundInput;
+              } else {
+                roundElement.textContent = "Rodada " + roundInput;
+              }                
+            }
+        }
+        updateRound();
+        roundElement.addEventListener("click", updateRound);
+    });
+</script>
+</html>

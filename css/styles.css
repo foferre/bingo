@@ -1,0 +1,31 @@
+#currentBall {
+    background: #ececec;
+    min-height: 12rem;
+    position: relative;
+    margin: auto;
+}
+#ballGraphic, #ballText {
+    padding: 0.8em 1.3em;
+    margin: 0.5em auto;
+    border-radius: 100%;
+}
+#ballText {
+    line-height: 1;
+    padding: 0.5em 1em;
+    font-weight: bold;
+}
+#callNumber {
+    position: absolute;
+    bottom: 0.5em;
+    right: 0.5em;
+    background: white;
+    color: #444;
+    font-size: 1rem;
+    padding: 0.5em;
+}
+/* Exemplo de classes para cores, conforme os intervalos: */
+.blue  { background: radial-gradient(circle at 20% 20%, #0000FF, #0000ad); }
+.red   { background: radial-gradient(circle at 20% 20%, #FF0000, #910000); }
+.white { background: radial-gradient(circle at 20% 20%, #ffffff, #b6b6b6); }
+.green { background: radial-gradient(circle at 20% 20%, #008000, #004a00); }
+.orange{ background: radial-gradient(circle at 20% 20%, #FFA500, #9c6400); }
