@@ -7,8 +7,8 @@
     <title>Bingo</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body{
-            background: #0CCE6B url('https://www.transparenttextures.com/patterns/arabesque.png') repeat;;
+        body {
+            background: #0CCE6B url('https://www.transparenttextures.com/patterns/arabesque.png') repeat;
         }
 
         #bingoBoard td {
@@ -22,20 +22,38 @@
             padding-left: 1em;
             padding-top: 2.5em;
         }
-        
-        td.letter-B { background-color: red !important; color: whitesmoke !important}
-        td.letter-I { background-color: yellow !important; color: gray !important}
-        td.letter-N { background-color: green !important; color: whitesmoke !important}
-        td.letter-G { background-color: blue !important; color: whitesmoke !important}
-        td.letter-O { background-color: purple !important; color: whitesmoke !important}
+
+        td.letter-B {
+            background-color: red !important;
+            color: whitesmoke !important
+        }
+
+        td.letter-I {
+            background-color: yellow !important;
+            color: gray !important
+        }
+
+        td.letter-N {
+            background-color: green !important;
+            color: whitesmoke !important
+        }
+
+        td.letter-G {
+            background-color: blue !important;
+            color: whitesmoke !important
+        }
+
+        td.letter-O {
+            background-color: purple !important;
+            color: whitesmoke !important
+        }
 
         .live-placeholder {
             margin-top: 1%;
-            width: 100%; /* Ocupa a largura do contêiner pai */
-            /*max-width: 500px; /* Limita o tamanho máximo */
-            height: 100%; /* Define a altura para manter o quadrado */
-            border: 5px solid #007bff; /* Moldura azul */
-            background-color: #f8f9fa; /* Cor de fundo cinza claro */
+            width: 100%;
+            height: 100%;
+            border: 5px solid #007bff;
+            background-color: #f8f9fa;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -45,35 +63,96 @@
         }
 
         .col-md-4 {
-          display: flex;
-          justify-content: center; /* Centraliza horizontalmente */
-          align-items: center; /* Centraliza verticalmente */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         #logo {
-            max-width: 100%; /* Garante que a imagem não ultrapasse o contêiner */
-            max-height: 100%; /* Evita que a imagem fique maior que o espaço disponível */
+            max-width: 100%;
+            max-height: 100%;
         }
 
         #roundNumber {
-          cursor: pointer; 
-          background: white; 
-          padding: 3vw 4vw; 
-          border-radius: 10px;
-          box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-          font-size: 3vw;
-          font-weight: bold;
+            cursor: pointer;
+            background: whitesmoke;
+            padding: 0.5vw 0.5vw;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            font-size: 3vw;
+            font-weight: bold;
+            margin-bottom: 0.1em; /* Adjust margin to move the ball closer */
         }
 
+        .ball-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-left: 2em;
+        }
+
+        .ball {
+            width: 80%;
+            height: 135%;
+            border-radius: 50%;
+            background: black;
+            background: -webkit-radial-gradient(90% 12%, ellipse, white, black, black);
+            background: -moz-radial-gradient(90% 12%, ellipse, white, black, black);
+            background: -o-radial-gradient(90% 12%, ellipse, white, black, black);
+            background: -ms-radial-gradient(90% 12%, ellipse, white, black, black);
+            background: radial-gradient(90% 12%, ellipse, white, black, black);
+            position: relative;
+            box-shadow: inset 5px -5px 20px 8px rgba(0,0,0,.3);
+            visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo1 {
+            width: 110px;
+            height: 110px;
+            border-radius: 100%;
+            background: rgba(255,255,255,.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .number1 p {
+            font-size: 5em;
+            font-family: Helvetica, sans-serif;
+            font-weight: bolder;
+            margin: 0;
+        }
+
+        .shadow {
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, .7);
+            z-index: -1;
+            position: absolute;
+            box-shadow: 5px 5px 75px 15px rgba(0,0,0,1);
+            top: auto; /* Adjust this value to move the shadow below the ball */
+            left: 40%;
+            transform: translate(-50%, -50%) scale(.85,.25);
+            visibility: hidden;
+        }
+
+        .centered-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8" style="height: 65vh;">
-              <div class="live-placeholder">
-                <span>Área para transmissão ao vivo</span>
-              </div>
             </div>
             <div class="col-md-4" style="height: 65vh;">
                 <img id="logo" src="assets/images/logo.png"></img>
@@ -85,65 +164,147 @@
                     <tbody></tbody>
                 </table>
             </div>
-            <div class="col-md-4" style="height: 35vh;">
-              <span id="roundNumber">
-                  Rodada: 
-              </span>
+            <div class="col-md-4 centered-content" style="height: 25vh;">
+                <span id="roundNumber">
+                    Rodada:
+                </span>
+                <div class="ball-container">
+                    <div id="bingoBall" class="ball">
+                        <div class="logo1">
+                            <div class="number1">
+                                <p id="ballNumber"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="shadow" id="shadow"></div>
+                </div>
             </div>
         </div>
     </div>
     <script src="js/bootstrap.min.js"></script>
 </body>
+
 <script>
     function playSound(num) {
-      const audio = new Audio(`assets/audios/n${num}.mp3`);
-      audio.play();
+        const audio = new Audio(`assets/audios/n${num}.mp3`);
+        audio.play();
     }
+
     // Geração dinâmica da cartela de bingo e configuração dos cliques
     window.addEventListener("DOMContentLoaded", function() {
-      const bingoBoardBody = document.querySelector("#bingoBoard tbody");
-      const letters = ["B", "I", "N", "G", "O"];
-      let lastDrawnCell = null;
-      let round = 0;
-      
-      for (let i = 0; i < 5; i++) {
-        const tr = document.createElement("tr");
-        // Cria a célula da letra e adiciona a classe para a cor (ex.: letter-B)
-        const letterTd = document.createElement("td");
-        letterTd.textContent = letters[i];
-        letterTd.classList.add("text-center", "align-middle", "fw-bold", "letter-" + letters[i]);
-        tr.appendChild(letterTd);
-        
-        // Cria 15 células com os números correspondentes
-        const start = i * 15 + 1;
-        const end = start + 15;
-        for (let num = start; num < end; num++) {
-          const td = document.createElement("td");
-          td.textContent = num;
-          td.dataset.number = num;
-          td.classList.add("text-center");
-          td.addEventListener("click", function() {
-            if (td.classList.contains("bg-danger") || td.classList.contains("bg-warning")) {
-              td.classList.remove("bg-danger", "bg-warning");
-              if (td === lastDrawnCell) {
-                lastDrawnCell = null;
-              }
-              return;
+        const bingoBoardBody = document.querySelector("#bingoBoard tbody");
+        const letters = ["B", "I", "N", "G", "O"];
+        let lastDrawnCell = null;
+        let round = 0;
+
+        for (let i = 0; i < 5; i++) {
+            const tr = document.createElement("tr");
+            // Cria a célula da letra e adiciona a classe para a cor (ex.: letter-B)
+            const letterTd = document.createElement("td");
+            letterTd.textContent = letters[i];
+            letterTd.classList.add("text-center", "align-middle", "fw-bold", "letter-" + letters[i]);
+            tr.appendChild(letterTd);
+
+            // Cria 15 células com os números correspondentes
+            const start = i * 15 + 1;
+            const end = start + 15;
+            for (let num = start; num < end; num++) {
+                const td = document.createElement("td");
+                td.textContent = num;
+                td.dataset.number = num;
+                td.classList.add("text-center");
+                td.addEventListener("click", function() {
+                    if (td.classList.contains("bg-danger") || td.classList.contains("bg-warning")) {
+                        td.classList.remove("bg-danger", "bg-warning");
+                        if (td === lastDrawnCell) {
+                            lastDrawnCell = null;
+                        }
+                        return;
+                    }
+                    if (lastDrawnCell) {
+                        lastDrawnCell.classList.remove("bg-danger");
+                        lastDrawnCell.classList.add("bg-warning");
+                    }
+                    td.classList.add("bg-danger");
+                    lastDrawnCell = td;
+                    round++;
+                    playSound(td.dataset.number);
+                    updateBall(td.dataset.number);
+                });
+                tr.appendChild(td);
             }
-            if (lastDrawnCell) {
-              lastDrawnCell.classList.remove("bg-danger");
-              lastDrawnCell.classList.add("bg-warning");
-            }
-            td.classList.add("bg-danger");
-            lastDrawnCell = td;
-            round++;
-            playSound(td.dataset.number);
-          });
-          tr.appendChild(td);
+            bingoBoardBody.appendChild(tr);
         }
-        bingoBoardBody.appendChild(tr);
-      }
     });
+
+    // Atualiza o número da bola de bingo
+    function updateBall(number) {
+        const ball = document.getElementById("bingoBall");
+        const ballNumber = document.getElementById("ballNumber");
+        const shadow = document.getElementById("shadow");
+        ballNumber.textContent = number;
+        ball.style.visibility = 'visible';
+        shadow.style.visibility = 'visible';
+        const numberInt = parseInt(number);
+        let firstLetter = '';
+
+        if (numberInt >= 1 && numberInt <= 15) {
+            firstLetter = 'B';
+        } else if (numberInt >= 16 && numberInt <= 30) {
+            firstLetter = 'I';
+        } else if (numberInt >= 31 && numberInt <= 45) {
+            firstLetter = 'N';
+        } else if (numberInt >= 46 && numberInt <= 60) {
+            firstLetter = 'G';
+        } else if (numberInt >= 61 && numberInt <= 75) {
+            firstLetter = 'O';
+        }
+
+        // Defina a cor da bola dependendo do prefixo da letra (B, I, N, G, O)
+        switch(firstLetter) {
+            case 'B':
+                ball.style.background = '-webkit-radial-gradient(90% 12%, ellipse, white, red, red)';
+                ball.style.background = '-moz-radial-gradient(90% 12%, ellipse, white, red, red)';
+                ball.style.background = '-o-radial-gradient(90% 12%, ellipse, white, red, red)';
+                ball.style.background = '-ms-radial-gradient(90% 12%, ellipse, white, red, red)';
+                ball.style.background = 'radial-gradient(90% 12%, ellipse, white, red, red)';
+                break;
+            case 'I':
+                ball.style.background = '-webkit-radial-gradient(90% 12%, ellipse, white, yellow, yellow)';
+                ball.style.background = '-moz-radial-gradient(90% 12%, ellipse, white, yellow, yellow)';
+                ball.style.background = '-o-radial-gradient(90% 12%, ellipse, white, yellow, yellow)';
+                ball.style.background = '-ms-radial-gradient(90% 12%, ellipse, white, yellow, yellow)';
+                ball.style.background = 'radial-gradient(90% 12%, ellipse, white, yellow, yellow)';
+                break;
+            case 'N':
+                ball.style.background = '-webkit-radial-gradient(90% 12%, ellipse, white, green, green)';
+                ball.style.background = '-moz-radial-gradient(90% 12%, ellipse, white, green, green)';
+                ball.style.background = '-o-radial-gradient(90% 12%, ellipse, white, green, green)';
+                ball.style.background = '-ms-radial-gradient(90% 12%, ellipse, white, green, green)';
+                ball.style.background = 'radial-gradient(90% 12%, ellipse, white, green, green)';
+                break;
+            case 'G':
+                ball.style.background = '-webkit-radial-gradient(90% 12%, ellipse, white, blue, blue)';
+                ball.style.background = '-moz-radial-gradient(90% 12%, ellipse, white, blue, blue)';
+                ball.style.background = '-o-radial-gradient(90% 12%, ellipse, white, blue, blue)';
+                ball.style.background = '-ms-radial-gradient(90% 12%, ellipse, white, blue, blue)';
+                ball.style.background = 'radial-gradient(90% 12%, ellipse, white, blue, blue)';
+                break;
+            case 'O':
+                ball.style.background = '-webkit-radial-gradient(90% 12%, ellipse, white, purple, purple)';
+                ball.style.background = '-moz-radial-gradient(90% 12%, ellipse, white, purple, purple)';
+                ball.style.background = '-o-radial-gradient(90% 12%, ellipse, white, purple, purple)';
+                ball.style.background = '-ms-radial-gradient(90% 12%, ellipse, white, purple, purple)';
+                ball.style.background = 'radial-gradient(90% 12%, ellipse, white, purple, purple)';
+                break;
+            default:
+                ball.style.background = '-webkit-radial-gradient(90% 12%, ellipse, white, #f0f0f0, #f0f0f0)';
+                ball.style.background = '-moz-radial-gradient(90% 12%, ellipse, white, #f0f0f0, #f0f0f0)';
+                ball.style.background = '-o-radial-gradient(90% 12%, ellipse, white, #f0f0f0, #f0f0f0)';
+                ball.style.background = '-ms-radial-gradient(90% 12%, ellipse, white, #f0f0f0, #f0f0f0)';
+                ball.style.background = 'radial-gradient(90% 12%, ellipse, white, #f0f0f0, #f0f0f0)';
+        }
+    }
 
     document.addEventListener("DOMContentLoaded", function() {
         let roundElement = document.getElementById("roundNumber");
@@ -151,11 +312,11 @@
         function updateRound() {
             let roundInput = prompt("Digite o número da rodada:");
             if (roundInput !== null) {
-              if (roundInput.trim() !== "" && !isNaN(roundInput)) {
-                roundElement.textContent = "Rodada: " + roundInput;
-              } else {
-                roundElement.textContent = "Rodada " + roundInput;
-              }                
+                if (roundInput.trim() !== "" && !isNaN(roundInput)) {
+                    roundElement.textContent = "Rodada: " + roundInput;
+                } else {
+                    roundElement.textContent = "Rodada " + roundInput;
+                }
             }
         }
         updateRound();
